@@ -1,23 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
-
+import React, { useState, useEffect } from "react";
+import "./App.css";
+const URL = "https://jsonplaceholder.typicode.com/users";
 function App() {
+  const [data, setData] = useState([]);
+  const fetchData = async () => {
+    const response = await fetch(URL);
+    const data = await response.json();
+    console.log(data);
+    setData(data);
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Display the card of User Data</h1>
+      <div className="cardContainer">
+        {data.map((item, index) => (
+          <div className="card" key={index}>
+            <div className="cardStyle">
+              <li>{item.name}</li>
+              <li>{item.email}</li>
+              <li>{JSON.stringify(item.address)}</li>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
